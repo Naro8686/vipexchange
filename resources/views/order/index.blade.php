@@ -59,7 +59,7 @@
 </head>
 <body class="bg-[var(--bg)] text-white">
 <!-- Header / Hero -->
-<header class="relative isolate">
+<header class="relative isolate" style="overflow-x: clip;">
     <div class="absolute inset-0 -z-10 opacity-25" aria-hidden="true">
         <div class="absolute -top-24 -left-16 h-72 w-72 rounded-full blur-3xl"
              style="background: radial-gradient(ellipse at center, var(--accent), transparent 60%);"></div>
