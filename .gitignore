@@ -4,3 +4,13 @@ Homestead.json
 Homestead.yaml
 .env
 .phpunit.result.cache
+database/*.sqlite
+
+/storage/*.key
+/storage/*.log
+/storage/debugbar
+
+/.vscode
+*.swp
+.DS_Store
+Thumbs.db

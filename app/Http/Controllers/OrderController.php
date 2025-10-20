@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\TelegramService;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\ValidationException;
+
+//use Illuminate\Support\Facades\Mail;
 
 class OrderController extends Controller
 {
@@ -57,18 +59,28 @@ class OrderController extends Controller
         ];
 
         try {
+            $tgService = new TelegramService();
+
+            $message = "<b>Новая заявка</b>\n"
+                . "Telegram: {$request->telegram}\n"
+                . "Направление: {$directionText}\n"
+                . "Сумма: <code>{$request->amount}</code>";
+
+            $sended = $tgService->sendMessage($message);
+
+            if (!$sended) {
+                throw new Exception('Не получилось отправить уведомления!');
+            }
+//            Mail::send('mails.order', [
+//                'telegram' => $request->telegram,
+//                'amount' => $request->amount,
+//                'direction' => $directionText,
+//            ], function ($message) {
+//                $message->to(config('mail.to.address'), config('mail.to.name'))
+//                    ->subject('Новая заявка с сайта')
+//                    ->from(config('mail.from.address'), config('mail.from.name'));
+//            });
             DB::table('orders')->insert($data);
-
-            Mail::send('mails.order', [
-                'telegram' => $request->telegram,
-                'amount' => $request->amount,
-                'direction' => $directionText,
-            ], function ($message) {
-                $message->to(config('mail.to.address'), config('mail.to.name'))
-                    ->subject('Новая заявка с сайта')
-                    ->from(config('mail.from.address'), config('mail.from.name'));
-            });
-
             return response()->json(['message' => 'Заявка успешно отправлена']);
         } catch (Exception $e) {
             Log::error('Ошибка при создании заявки: ' . $e->getMessage());
