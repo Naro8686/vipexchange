@@ -364,7 +364,7 @@
             const data = await res.json();
 
             if (res.ok) {
-                calcMsg.textContent = 'Заявка сформирована.!';
+                calcMsg.textContent = 'Заявка сформирована.';
                 calcForm.reset();
                 resultEl.textContent = '—';
                 usedRateEl.textContent = '—';
@@ -421,7 +421,7 @@
             const data = await res.json();
 
             if (res.ok) {
-                qMsg.textContent = 'Заявка сформирована.!';
+                qMsg.textContent = 'Заявка сформирована.';
                 quickForm.reset();
             } else {
                 qMsg.textContent = 'Ошибка: ' + (data.message || 'проверьте данные');
